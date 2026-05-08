@@ -68,7 +68,7 @@ export default function ResultCard({ url, preview }: Props) {
           {displayJson}
         </pre>
         {truncated && (
-          <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-neutral-900 to-transparent pointer-events-none" />
+          <div className="absolute bottom-0 left-0 right-0 h-12 bg-linear-to-t from-neutral-900 to-transparent pointer-events-none" />
         )}
       </div>
 
