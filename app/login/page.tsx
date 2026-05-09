@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -87,7 +87,19 @@ function LoginForm() {
             autoComplete="email"
             placeholder="ornek@mail.com"
             {...register("email")}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-violet-500/60 focus:ring-1 focus:ring-violet-500/30 transition-colors"
+            className="w-full rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-white/25 focus:outline-none transition-all duration-200"
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.09)",
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.border = "1px solid rgba(139,92,246,0.45)";
+              e.currentTarget.style.boxShadow = "0 0 0 3px rgba(139,92,246,0.1)";
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.border = "1px solid rgba(255,255,255,0.09)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
           />
           {errors.email && (
             <p className="text-xs text-red-400">{errors.email.message}</p>
@@ -112,7 +124,19 @@ function LoginForm() {
             autoComplete="current-password"
             placeholder="••••••••"
             {...register("password")}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-violet-500/60 focus:ring-1 focus:ring-violet-500/30 transition-colors"
+            className="w-full rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-white/25 focus:outline-none transition-all duration-200"
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.09)",
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.border = "1px solid rgba(139,92,246,0.45)";
+              e.currentTarget.style.boxShadow = "0 0 0 3px rgba(139,92,246,0.1)";
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.border = "1px solid rgba(255,255,255,0.09)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
           />
           {errors.password && (
             <p className="text-xs text-red-400">{errors.password.message}</p>
@@ -122,16 +146,20 @@ function LoginForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-lg px-4 py-2.5 text-sm transition-colors"
+          className="w-full flex items-center justify-center gap-2 text-white font-medium rounded-xl px-4 py-2.5 text-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{
+            background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
+            boxShadow: "0 0 20px rgba(139,92,246,0.28), 0 4px 12px rgba(0,0,0,0.3)",
+          }}
         >
           {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
-          {isSubmitting ? "Giriş yapılıyor..." : "Giriş Yap"}
+          {isSubmitting ? "GiriÅŸ yapÄ±lÄ±yor..." : "GiriÅŸ Yap"}
         </button>
 
-        <p className="text-center text-xs text-white/40">
-          Hesabınız yok mu?{" "}
+        <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>
+          HesabÄ±nÄ±z yok mu?{" "}
           <Link href="/register" className="text-violet-400 hover:text-violet-300 transition-colors">
-            Kayıt olun
+            KayÄ±t olun
           </Link>
         </p>
       </form>
