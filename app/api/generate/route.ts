@@ -1,12 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { supabase } from "@/lib/supabase";
-import { masterMockApiPrompt } from "@/system prompt/systemPrompt";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export async function POST(req: NextRequest) {
   try {
+    const supabase = await createSupabaseServerClient();
+
+    // Kullanıcı oturumunu kontrol et
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Bu işlem için giriş yapmanız gerekmektedir." },
+        { status: 401 }
+      );
+    }
+
+    // Kredi kontrolü
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("credits")
+      .eq("id", user.id)
+      .single();
+
+    if (profileError || !profile) {
+      return NextResponse.json(
+        { error: "Kullanıcı profili bulunamadı." },
+        { status: 500 }
+      );
+    }
+
+    if (profile.credits <= 0) {
+      return NextResponse.json(
+        { error: "Krediniz yetersiz. Lütfen kredinizi artırın." },
+        { status: 402 }
+      );
+    }
+
     const { prompt } = await req.json();
 
     if (!prompt || typeof prompt !== "string" || prompt.trim().length < 5) {
@@ -46,11 +80,20 @@ export async function POST(req: NextRequest) {
     // Benzersiz slug üret
     const slug = Math.random().toString(36).substring(2, 10);
 
-    // Supabase'e kaydet
+    // Krediyi düş
+    const { error: creditError } = await supabase
+      .from("profiles")
+      .update({ credits: profile.credits - 1 })
+      .eq("id", user.id);
+
+    if (creditError) throw new Error("Kredi güncellenirken hata oluştu.");
+
+    // Supabase'e kaydet (author_id ile birlikte)
     const { error: dbError } = await supabase.from("mock_endpoints").insert({
       slug,
       prompt: prompt.trim(),
       mock_data: mockData,
+      author_id: user.id,
     });
 
     if (dbError) throw new Error(dbError.message);
