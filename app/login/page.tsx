@@ -153,13 +153,13 @@ function LoginForm() {
           }}
         >
           {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
-          {isSubmitting ? "GiriÅŸ yapÄ±lÄ±yor..." : "GiriÅŸ Yap"}
+          {isSubmitting ? "Giriş yapılıyor..." : "Giriş Yap"}
         </button>
 
         <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>
-          HesabÄ±nÄ±z yok mu?{" "}
+          Hesabınız yok mu?{" "}
           <Link href="/register" className="text-violet-400 hover:text-violet-300 transition-colors">
-            KayÄ±t olun
+            Kayıt olun
           </Link>
         </p>
       </form>
