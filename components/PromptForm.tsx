@@ -12,6 +12,7 @@ const EXAMPLES = [
 
 interface Props {
   onResult: (data: { slug: string; url: string; preview: unknown }) => void;
+  onLoadingChange?: (loading: boolean) => void;
 }
 
 function GeneratingSkeleton() {
@@ -61,15 +62,20 @@ function GeneratingSkeleton() {
   );
 }
 
-export default function PromptForm({ onResult }: Props) {
+export default function PromptForm({ onResult, onLoadingChange }: Props) {
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const setLoadingState = (val: boolean) => {
+    setLoading(val);
+    onLoadingChange?.(val);
+  };
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!prompt.trim() || loading) return;
-    setLoading(true);
+    setLoadingState(true);
     setError("");
 
     try {
@@ -87,7 +93,7 @@ export default function PromptForm({ onResult }: Props) {
     } catch (err) {
       setError(err instanceof Error ? err.message : "Bir hata oluştu.");
     } finally {
-      setLoading(false);
+      setLoadingState(false);
     }
   }
 

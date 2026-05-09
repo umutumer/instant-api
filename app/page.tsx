@@ -13,6 +13,7 @@ interface Result {
 
 export default function Home() {
   const [result, setResult] = useState<Result | null>(null);
+  const [generating, setGenerating] = useState(false);
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -88,8 +89,8 @@ export default function Home() {
 
         {/* Form + Result */}
         <div className="relative w-full max-w-2xl space-y-8 animate-fade-up animate-fade-up-delay-1">
-          <PromptForm onResult={setResult} />
-          {result && (
+          <PromptForm onResult={setResult} onLoadingChange={setGenerating} />
+          {result && !generating && (
             <>
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-px bg-white/6" />
