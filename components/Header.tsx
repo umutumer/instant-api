@@ -38,14 +38,7 @@ export default function Header() {
           null;
         setDisplayName(name);
 
-        supabase
-          .from("profiles")
-          .select("credits")
-          .eq("id", data.user.id)
-          .single()
-          .then(({ data: profile }) => {
-            if (profile) setCredits(profile.credits);
-          });
+        refreshCredits(data.user.id);
       }
     });
 
@@ -67,6 +60,23 @@ export default function Header() {
 
     return () => listener.subscription.unsubscribe();
   }, []);
+
+  const refreshCredits = async (userId: string) => {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("credits")
+      .eq("id", userId)
+      .single();
+    if (profile) setCredits(profile.credits);
+  };
+
+  useEffect(() => {
+    const handler = () => {
+      if (user) refreshCredits(user.id);
+    };
+    window.addEventListener("credits-updated", handler);
+    return () => window.removeEventListener("credits-updated", handler);
+  }, [user]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
