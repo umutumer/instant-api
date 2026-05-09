@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { supabase } from "@/lib/supabase";
+import { masterMockApiPrompt } from "@/system prompt/systemPrompt";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -15,8 +16,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // OpenAI JSON Mode çağrısı
-    const completion = await openai.chat.completions.create({
+ const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       response_format: { type: "json_object" },
       temperature: 0.8,
@@ -24,17 +24,7 @@ export async function POST(req: NextRequest) {
       messages: [
         {
           role: "system",
-          content: `You are a mock API data generator. Your sole job is to return a single valid JSON object or array based on the user's description.
-
-Rules:
-- Always return ONLY raw JSON — no markdown, no explanation, no code fences.
-- If the user asks for a list/array, return a JSON object with a "data" key containing the array.
-- If the user asks for a single object, return a JSON object.
-- Make the data realistic and varied (use real-looking names, emails, addresses, prices, dates, etc.).
-- Respect the quantity requested (e.g. "50 users" → "data" array of 50 items).
-- Field names must be camelCase.
-- Dates must be ISO 8601 format.
-- Do not include any metadata wrapper — just the raw JSON data.`,
+          content: masterMockApiPrompt, // Sadece Master Prompt'u veriyoruz
         },
         {
           role: "user",
