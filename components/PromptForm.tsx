@@ -83,6 +83,7 @@ export default function PromptForm({ onResult }: Props) {
 
       if (!res.ok) throw new Error(data.error ?? "Bir hata oluştu.");
       onResult(data);
+      window.dispatchEvent(new CustomEvent("credits-updated"));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Bir hata oluştu.");
     } finally {
