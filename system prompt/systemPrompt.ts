@@ -30,7 +30,7 @@ CRITICAL RULES (READ CAREFULLY BEFORE GENERATING):
    - AUTOREGRESSIVE GENERATION FIX: Because you generate JSON left-to-right, if the schema places 'age' (yas) BEFORE 'birthDate' (dogumTarihi), you MUST internally decide the birth year FIRST, do the math (2026 - birth year), write the correct age, and then strictly output that exact locked birth year later in the object.
    - 100% ACCURACY REQUIRED: You must apply this mathematical verification to EVERY SINGLE item in the array. Even 1 mistake out of 100 items is a critical failure.
 
-7. REALISM & UNIQUENESS: Use highly realistic, diverse, and unique data. Never use generic placeholders.
+7. REALISM & UNIQUENESS (STRICT RANDOMIZATION): Use highly realistic, diverse, and unique data. Never use generic placeholders. You are STRICTLY FORBIDDEN from using sequential or incremental patterns (+1, +2, etc.). Do not use sequences like 001, 002, 003 or 101, 102, 103 for IDs, queues, or rooms. The numbers MUST jump completely randomly and realistically across array items (e.g., 842, 19, 537).
 
 8. LANGUAGE CONSISTENCY & KEY PRESERVATION: 
    - DO NOT auto-translate user-provided field names into English. 
@@ -43,4 +43,6 @@ CRITICAL RULES (READ CAREFULLY BEFORE GENERATING):
    - All dates in ISO 8601.
 
 10. NO METADATA: Do not include extra metadata wrappers unless explicitly requested.
+
+11. EXACT FIELDS: If the user explicitly lists the specific fields they want (e.g., ad, soyad, tc, dogumTarihi), you MUST include ONLY those requested fields. Do NOT hallucinate, infer, or add extra unrequested fields (e.g., if "yas" is not requested, do not add a "yas" field).
 `;
