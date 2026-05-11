@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# instant-api
 
-## Getting Started
+Yapay zeka kullanarak, ön uç geliştiricilerin projelerinde kullanabilecekleri Supabase'e bağlı API uç noktalarını anında oluşturan bir proje.
 
-First, run the development server:
+## Özet
+- Next.js (App Router)
+- Supabase entegrasyonu (tarayıcı ve server side)
+- Hazır kimlik doğrulama sayfaları ve API route'ları
+
+## Hızlı Başlangıç
+
+Gereksinimler: `node` ve tercih ettiğiniz paket yöneticisi (`npm`, `pnpm`, `yarn`).
+
+1. Bağımlılıkları yükleyin:
+
+```bash
+npm install
+```
+
+2. Ortam değişkenlerini ayarlayın (örnek):
+
+- OPENAI_API_KEY=""
+- NEXT_PUBLIC_SUPABASE_URL=""
+- NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=""
+- NEXT_PUBLIC_BASE_URL=http://localhost:3000
+
+3. Geliştirme sunucusunu başlatın:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Tarayıcıda http://localhost:3000 adresini açın.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Proje Yapısı (önemli dosyalar)
+- `app/` — Uygulama sayfaları ve API route'ları.
+	- [app/api/generate/route.ts](app/api/generate/route.ts) — üretim/işlem API örneği
+	- [app/api/v1/[slug]/route.ts](app/api/v1/[slug]/route.ts) — dinamik API route örneği
+	- [app/login/page.tsx](app/login/page.tsx) — giriş sayfası
+	- [app/register/page.tsx](app/register/page.tsx) — kayıt sayfası
+	- [app/my-apis/page.tsx](app/my-apis/page.tsx) — kullanıcıya özel API listesi
+- `lib/` — Supabase helperları ve yardımcı fonksiyonlar
+- `components/` — UI bileşenleri (Header, PromptForm, ResultCard vb.)
+- `public/` ve `system prompt/` — statik varlıklar ve sistem prompt dosyası
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Kimlik Doğrulama ve Supabase
+Projede Supabase kullanılıyor. Tarayıcı ve sunucu için ayrı yapılandırma dosyaları: [lib/supabase-browser.ts](lib/supabase-browser.ts) ve [lib/supabase-server.ts](lib/supabase-server.ts).
 
-## Learn More
+Ortam değişkenlerini doğru şekilde ayarladıktan sonra uygulama Supabase ile oturum açma/kayıt akışlarını kullanır.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Çalışma ve Üretim
+- Geliştirme: `npm run dev`
+- Üretim için build: `npm run build`
+- Üretimi başlat: `npm start` veya platforma göre (`vercel`, `netlify` vb.) dağıtım
